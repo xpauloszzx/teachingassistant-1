@@ -83,6 +83,30 @@ Then(/^I can see a self-evaluation with title "([^\"]*)" in the self-evaluations
   allSelfEvals.filter(elem => elem.element(by.name('titlelist')).getText().then(text => text === title)).then(elems => expect(Promise.resolve(elems.length)).to.eventually.equal(1));
 });
 
+import { Component, OnInit } from '@angular/core';
+import { Evaluation } from '../evaluation';
+import { EvaluationService } from '../evaluation.service';
+
+@Component({
+  selector: 'app-discrepancies',
+  templateUrl: './discrepancies.component.html',
+  styleUrls: ['./discrepancies.component.css']
+})
+export class DiscrepanciesComponent implements OnInit {
+  evaluations: Evaluation[];
+
+  constructor(private evaluationService: EvaluationService) { }
+
+  ngOnInit() {
+    this.getEvaluations();
+  }
+
+  getEvaluations(): void {
+    this.evaluationService.getEvaluations()
+      .subscribe(evaluations => this.evaluations = evaluations);
+  }
+}
+
 
 
 
